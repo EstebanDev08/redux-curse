@@ -3,33 +3,38 @@ import { PokeList } from "./components/PokeList";
 import { Searcher } from "./components/Searcher";
 import { Home } from "./pages/Home";
 import { getPokemonsData } from "./hooks/useApi";
-import { connect } from "react-redux";
-import { setPokemonsActions } from "./actions";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setPokemonsActions } from "./actions";
+import { LoadingPage } from "./components/Loading";
 
-function App({ pokemons, setPokemons }) {
+function App() {
+  const pokemons = useSelector((state) => state.pokemons);
+  const isLoading = useSelector((state) => state.loading);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const pokemons = async () => {
+    const fetchPokemons = async () => {
       const items = await getPokemonsData();
-      setPokemons(items);
+
+      const pokemonsDetail = await Promise.all(
+        items.map(async (poke) => {
+          return await getPokemonsData(poke.url);
+        })
+      );
+
+      dispatch(setPokemonsActions(pokemonsDetail));
+      dispatch(setLoading(false));
     };
 
-    pokemons();
+    fetchPokemons();
   }, []);
 
   return (
     <Home>
       <Searcher />
-      <PokeList pokemons={pokemons} />
+      {isLoading ? <LoadingPage /> : <PokeList pokemons={pokemons} />}
     </Home>
   );
 }
 
-const mapStateToProps = (state) => ({
-  pokemons: state.pokemons,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setPokemons: (value) => dispatch(setPokemonsActions(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -1,16 +1,27 @@
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { setFavorite } from "../actions";
 
-const PokeCard = ({ pokemon }) => {
+const PokeCard = ({ name, img }) => {
+  const isFavorite = useSelector((state) => state.favorite);
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(setFavorite(!isFavorite));
+  };
+
   return (
-    <div>
+    <div className=" shadow-md p-4">
       <div className=" relative ">
-        <p>{pokemon.name}</p>
-        <img src="" alt="" />
+        <p className=" flex items-center justify-between">
+          {" "}
+          <span>{name}</span>{" "}
+          <span onClick={handleClick}>
+            {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
+          </span>
+        </p>
+        <img src={img} alt="" />
         <p>tipe</p>
-
-        <div className=" absolute top-0 right-0 p-2">
-          <AiOutlineHeart />
-        </div>
       </div>
     </div>
   );
