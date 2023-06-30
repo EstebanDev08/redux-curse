@@ -1,6 +1,6 @@
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { setFavorite } from "../actions";
+import { setFavorite } from "../slices/dataSlice";
 
 const PokeCard = ({ name, img }) => {
   const isFavorite = useSelector((state) => state.favorite);

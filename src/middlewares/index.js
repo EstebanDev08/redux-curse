@@ -1,4 +1,4 @@
-import { SET_POKEMONS } from "../actions/types";
+import { SET_POKEMONS } from "../actions-noused/types";
 
 const orderPokemon = (store) => (next) => (action) => {
   if (action.action.type === SET_POKEMONS) {

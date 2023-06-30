@@ -1,4 +1,8 @@
-import { SET_FAVORITE, SET_LOADING, SET_POKEMONS } from "../actions/types";
+import {
+  SET_FAVORITE,
+  SET_LOADING,
+  SET_POKEMONS,
+} from "../actions-noused/types";
 
 const initialState = {
   pokemons: [],
